@@ -1,0 +1,22 @@
+initialize() {
+	if (exists("slimgui")) {
+		defineConstant("N", 1000);
+		defineConstant("R", 1e-8);
+		defineConstant("OUTPUT", "background");
+	}
+	initializeMutationRate(1e-8);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeMutationType("m2", 0.25, "g", -0.1, 0.1);
+	initializeGenomicElementType("g1", c(m1, m2), c(1.0, 0.0001));
+	initializeGenomicElement(g1, 0, 1e8);
+	initializeRecombinationRate(R);
+}
+
+1 early() {
+	sim.addSubpop("p1", N);
+}
+
+N * 10 late() {
+	sampled = sample(sim.subpopulations.individuals, 20);
+	sampled.genomes.outputVCF("simulations/background/" + OUTPUT + ".vcf");
+}

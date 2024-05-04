@@ -1,0 +1,20 @@
+initialize() {
+	if (exists("slimgui")) {
+		defineConstant("N", 1000);
+		defineConstant("OUTPUT", "output");
+	}
+	initializeMutationRate(1e-8);
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeGenomicElementType("g1", m1, 1.0);
+	initializeGenomicElement(g1, 0, 1e8);
+	initializeRecombinationRate(1e-8);
+}
+
+1 early() {
+	sim.addSubpop("p1", N);
+}
+
+N * 10 late() {
+	sampled = sample(sim.subpopulations.individuals, 20);
+	sampled.genomes.outputVCF("simulations/wf/" + OUTPUT + ".vcf");
+}
